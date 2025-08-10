@@ -1,4 +1,9 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { FiUsers, FiUserPlus } from "react-icons/fi";
+import { BsBarChartLine, BsStars } from "react-icons/bs";
+import { IoExitOutline } from "react-icons/io5";
+import { CiSearch } from "react-icons/ci";
+import classes from "./SidebarLayout.module.css";
 
 export default function SidebarLayout() {
   const navigate = useNavigate();
@@ -11,63 +16,50 @@ export default function SidebarLayout() {
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
+    <div className={classes.layout}>
       {/* Sidebar */}
-      <aside
-        style={{
-          width: "220px",
-          background: "#2c3e50",
-          color: "#fff",
-          padding: "20px",
-        }}
-      >
-        <h2>Logo</h2>
-        <input type="text" placeholder="Search" />
-        <nav>
-          <h2>Recruitment</h2>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li>
-              <Link to="/dashboard" style={{ color: "#fff" }}>
-                Candidates
-              </Link>
-            </li>
-          </ul>
-          <h2>Organisation</h2>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li>
-              <Link to="/employees" style={{ color: "#fff" }}>
-                Employees
-              </Link>
-            </li>
-            <li>
-              <Link to="/attendance" style={{ color: "#fff" }}>
-                Attendance
-              </Link>
-            </li>
-            <li>
-              <Link to="/leaves" style={{ color: "#fff" }}>
-                Leaves
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <button
-          style={{
-            marginTop: "20px",
-            background: "#e74c3c",
-            color: "#fff",
-            padding: "8px 12px",
-            border: "none",
-            cursor: "pointer",
-          }}
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+      <aside className={classes.sidebar}>
+        <div className={classes.logo}>LOGO</div>
+
+        {/* Search Bar */}
+        <div className={classes.searchBox}>
+          <CiSearch className={classes.searchIcon} />
+          <input type="text" placeholder="Search" />
+        </div>
+
+        {/* Recruitment Section */}
+        <div className={classes.section}>
+          <p className={classes.sectionTitle}>Recruitment</p>
+          <Link to="/dashboard" className={classes.navItem}>
+            <FiUserPlus /> Candidates
+          </Link>
+        </div>
+
+        {/* Organization Section */}
+        <div className={classes.section}>
+          <p className={classes.sectionTitle}>Organization</p>
+          <Link to="/employees" className={classes.navItem}>
+            <FiUsers /> Employees
+          </Link>
+          <Link to="/attendance" className={classes.navItem}>
+            <BsBarChartLine /> Attendance
+          </Link>
+          <Link to="/leaves" className={classes.navItem}>
+            <BsStars /> Leaves
+          </Link>
+        </div>
+
+        {/* Others Section */}
+        <div className={classes.section}>
+          <p className={classes.sectionTitle}>Others</p>
+          <button className={classes.logoutBtn} onClick={handleLogout}>
+            <IoExitOutline /> Logout
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: "20px" }}>
+      <main className={classes.mainContent}>
         <Outlet />
       </main>
     </div>
