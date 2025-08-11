@@ -7,7 +7,11 @@ const {
   createCandidate,
   getAllCandidates,
   getEmployees,
-  changeStatus
+  changeStatus,
+  updateEmployee,
+  changeAttendanceStatus,
+  getPresentCandidates,
+  getCandidateById
 } = require("../controllers/candidateController");
 const auth = require("../middleware/auth");
 
@@ -45,5 +49,11 @@ router.post(
 router.put("/change-status", auth,changeStatus );
 router.get("/get-candidates", auth, getAllCandidates);
 router.get("/get-Employees", auth, getEmployees);
+router.put("/update-Employees", auth, updateEmployee);
+router.put("/change-attendance-status", auth,changeAttendanceStatus);
+
+router.get("/get-present-employees", auth, getPresentCandidates);
+router.get("/employee/:id", auth, getCandidateById);
+
 
 module.exports = router;

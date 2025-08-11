@@ -9,6 +9,7 @@ import Modal from "../../component/Modal/Modal";
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -43,12 +44,43 @@ const Employees = () => {
     }));
   };
 
-  const editHandler = () => {
+  const editHandler = (candidate) => {
+    setFormData({
+      id : candidate._id,
+      fullName: candidate?.fullName,
+      email: candidate?.email,
+      phone: candidate?.phone,
+      position: candidate?.position,
+      experience: candidate?.experience,
+      department: candidate?.department,
+      dateOfJoining: new Date(candidate.dateOfJoining)
+        .toISOString()
+        .split("T")[0],
+    });
     setShowModal(true);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    try {
+      const payload = {
+        ...formData,
+        dateOfJoining: formData.dateOfJoining
+          ? new Date(formData.dateOfJoining).toISOString()
+          : null,
+      };
+
+      await api.put("/candidate/update-Employees", payload);
+      fetchCandidates();
+      setShowModal(false);
+      toast.success("Employee updated successfully!");
+    } catch (err) {
+      console.error("Error updating employee:", err);
+      toast.error(err.response?.data?.message || "Failed to update employee");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <>
@@ -164,9 +196,9 @@ const Employees = () => {
                 Date of Joining<span>*</span>
               </label>
               <input
-                type="text"
-                name="department"
-                value={formData.department}
+                type="date"
+                name="dateOfJoining"
+                value={formData.dateOfJoining}
                 onChange={handleChange}
               />
             </div>

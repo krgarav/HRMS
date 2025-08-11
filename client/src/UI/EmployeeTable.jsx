@@ -8,9 +8,9 @@ const EmployeeTable = (props) => {
     setOpenDropdownId((prevId) => (prevId === id ? null : id));
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (candidate) => {
     setOpenDropdownId(null);
-    if (props.onEdit) props.onEdit(id);
+    if (props.onEdit) props.onEdit(candidate);
   };
 
   const handleDelete = (id) => {
@@ -33,7 +33,6 @@ const EmployeeTable = (props) => {
             <th>Employee Address</th>
             <th>Phone No.</th>
             <th>Position</th>
-          
             <th>Date of Joining</th>
             <th>Action</th>
           </tr>
@@ -78,7 +77,7 @@ const EmployeeTable = (props) => {
                     }}
                   >
                     <button
-                      onClick={() => handleEdit(candidate._id)}
+                      onClick={() => handleEdit(candidate)}
                       className={classes["dropdown-item"]}
                       style={{
                         padding: "8px 12px",

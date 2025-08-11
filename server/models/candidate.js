@@ -9,6 +9,7 @@ const candidateSchema = new mongoose.Schema(
     position: { type: String, required: true },
     department: { type: String, default: null },
     status: { type: String, required: true, default: "New" },
+    attendanceStatus : { type: String, default: null },
     dateOfJoining: { type: Date, default: null },
     experience: { type: String, required: true },
     resumePath: { type: String, required: true },

@@ -28,21 +28,25 @@ const AttendanceTable = (props) => {
             <tr key={candidate.id || candidate._id}>
               <td>{index + 1}</td>
               <td>{candidate.fullName}</td>
-              <td>{candidate.email}</td>
-              <td>{candidate.phone}</td>
               <td>{candidate.position}</td>
+              <td>{candidate.department}</td>
+
               <td>
-                {candidate.dateOfJoining
-                  ? new Date(candidate.dateOfJoining).toLocaleDateString(
-                      "en-GB"
-                    )
-                  : ""}
+                <select
+                  value={candidate.attendanceStatus || "Absent"}
+                  onChange={(e) =>
+                    props.onStatusChange(candidate._id, e.target.value)
+                  }
+                >
+                  <option value="Present">Present</option>
+                  <option value="Absent">Absent</option>
+                </select>
               </td>
 
               <td style={{ position: "relative" }}>
                 <button
                   className={classes["action-btn"]}
-                //   onClick={() => toggleDropdown(candidate._id)}
+                  //   onClick={() => toggleDropdown(candidate._id)}
                 >
                   ⋮
                 </button>
@@ -63,7 +67,7 @@ const AttendanceTable = (props) => {
                     }}
                   >
                     <button
-                    //   onClick={() => handleEdit(candidate._id)}
+                      //   onClick={() => handleEdit(candidate._id)}
                       className={classes["dropdown-item"]}
                       style={{
                         padding: "8px 12px",
@@ -77,7 +81,7 @@ const AttendanceTable = (props) => {
                       Edit
                     </button>
                     <button
-                    //   onClick={() => handleDelete(candidate._id)}
+                      //   onClick={() => handleDelete(candidate._id)}
                       className={classes["dropdown-item"]}
                       style={{
                         padding: "8px 12px",

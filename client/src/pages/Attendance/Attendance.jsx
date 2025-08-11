@@ -1,8 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import classes from "./Attendance.module.css";
+import AttendanceTable from "../../UI/AttendanceTable";
+import api from "../../common/Interceptors";
+import { toast } from "react-toastify";
 const Attendance = () => {
+  const [employees, setEmployees] = useState([]);
+  useEffect(() => {
+    fetchCandidates();
+  }, []);
 
+  const fetchCandidates = async () => {
+    try {
+      const res = await api.get("/candidate/get-Employees");
+      setEmployees(res.data);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error.response?.data?.message ||
+          "Error fetching candidates. Please try again."
+      );
+    }
+  };
+  const handleStatusChange = async (candidateId, newStatus) => {
+    try {
+      await api.put("/candidate/change-attendance-status", {
+        id: candidateId,
+        attendanceStatus: newStatus,
+      });
+
+      toast.success("Attendance status updated successfully!");
+
+      setEmployees((prev) =>
+        prev.map((c) =>
+          c._id === candidateId ? { ...c, attendanceStatus: newStatus } : c
+        )
+      );
+    } catch (error) {
+      console.error("Error updating attendance status:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to update attendance status"
+      );
+    }
+  };
   const addCandidateHandler = () => {};
   return (
     <>
@@ -34,6 +74,10 @@ const Attendance = () => {
           </button>
         </div>
       </div>
+      <AttendanceTable
+        employees={employees}
+        onStatusChange={handleStatusChange}
+      />
     </>
   );
 };
