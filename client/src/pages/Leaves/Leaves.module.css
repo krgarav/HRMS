@@ -1,0 +1,149 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+.leftSection {
+  display: flex;
+  gap: 5px;
+}
+.rightSection {
+  display: flex;
+  gap: 5px;
+}
+.select {
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: white;
+}
+
+.searchIcon {
+  font-size: 14px;
+  color: #888;
+  margin-right: 6px;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.addButton {
+  background: #4b0082; /* Purple */
+  color: white;
+  padding: 6px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background: #3a006a;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.inputGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #5b00b1;
+}
+
+label span {
+  color: red;
+}
+
+.form input[type="text"],
+.form input[type="email"] {
+  border: 1px solid #5b00b1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+.uploadWrapper {
+  border: 1px solid #5b00b1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.uploadWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fileInput {
+  flex: 1;
+  border: none;
+  outline: none;
+}
+
+.uploadIcon {
+  font-size: 18px;
+  color: #5b00b1;
+  cursor: pointer;
+}
+
+.declaration {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.saveBtn {
+  background: #ccc;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  color: white;
+  cursor: not-allowed;
+  align-self: center;
+  transition: background 0.2s ease, cursor 0.2s ease;
+}
+
+.activeBtn {
+  background: #5b00b1;
+  cursor: pointer;
+}
+.bottomRightSection {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}

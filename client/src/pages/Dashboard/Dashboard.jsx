@@ -6,6 +6,7 @@ import { FiUpload } from "react-icons/fi";
 import Modal from "../../component/Modal/Modal";
 import { toast } from "react-toastify";
 import axios from "axios";
+import api from "../../common/Interceptors";
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -22,23 +23,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetchCandidates();
   }, [isSuccess, showModal]);
+
   const fetchCandidates = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("You must be logged in to view candidates");
-        return;
-      }
-
-      const res = await axios.get(
-        "http://localhost:5000/candidate/get-candidates",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const res = await api.get("/candidate/get-candidates");
       setCandidates(res.data);
     } catch (error) {
       console.error(error);
@@ -48,7 +36,6 @@ const Dashboard = () => {
       );
     }
   };
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -146,7 +133,14 @@ const Dashboard = () => {
       <div className={classes.container}>
         <div className={classes.leftSection}>
           <select className={classes.select}>
-            <option>Status</option>
+            <option value="" disabled hidden>
+              Status
+            </option>
+            <option value="New">New</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Selected">Selected</option>
+            <option value="Rejected">Rejected</option>
           </select>
           <select className={classes.select}>
             <option>Position</option>
