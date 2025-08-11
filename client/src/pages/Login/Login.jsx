@@ -12,7 +12,7 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/users/login", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         email,
         password,
       });
@@ -79,7 +79,7 @@ const Login = () => {
             </button>
           </form>
           <small>
-            Don't have an account? ? <Link to="/register">Register</Link>
+            Don't have an account?  <Link to="/register">Register</Link>
           </small>
         </div>
       </div>

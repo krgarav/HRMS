@@ -23,7 +23,7 @@ const Register = () => {
     const obj = { name: fullname, email, password };
 
     try {
-      const res = await axios.post("http://localhost:5000/users/register", obj);
+      await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, obj);
 
       toast.success("User registered successfully!", { position: "top-right" });
 

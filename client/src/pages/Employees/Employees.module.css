@@ -86,12 +86,15 @@ label span {
 }
 
 .form input[type="text"],
-.form input[type="email"] {
+.form input[type="email"],
+.form select {
   border: 1px solid #5b00b1;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 14px;
   outline: none;
+  background-color: white;
+  appearance: none; /* Removes default browser dropdown styling */
 }
 .uploadWrapper {
   border: 1px solid #5b00b1;

@@ -17,6 +17,7 @@ const Dashboard = () => {
     phone: "",
     position: "",
     experience: "",
+    department:"",
     resume: null,
   });
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -255,6 +256,21 @@ const Dashboard = () => {
                 <FiUpload className={classes.uploadIcon} />
               </div>
             </div>
+          </div>
+
+          <div className={classes.row}>
+            <div className={classes.inputGroup}>
+              <label>
+               Department<span>*</span>
+              </label>
+              <input
+                type="text"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+              />
+            </div>
+            
           </div>
 
           <div className={classes.declaration}>

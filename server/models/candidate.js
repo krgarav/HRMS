@@ -7,6 +7,7 @@ const candidateSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
     position: { type: String, required: true },
+    department: { type: String, default: null },
     status: { type: String, required: true, default: "New" },
     dateOfJoining: { type: Date, default: null },
     experience: { type: String, required: true },
