@@ -212,12 +212,20 @@ const Dashboard = () => {
               <label>
                 Position<span>*</span>
               </label>
-              <input
-                type="text"
+              <select
                 name="position"
                 value={formData.position}
                 onChange={handleChange}
-              />
+              >
+                <option value="" disabled>
+                  Select Position
+                </option>
+                <option value="Intern">Intern</option>
+                <option value="FullTime">Full Time</option>
+                <option value="Junior">Junior</option>
+                <option value="Senior">Senior</option>
+                <option value="TeamLeader">Team Leader</option>
+              </select>
             </div>
           </div>
 

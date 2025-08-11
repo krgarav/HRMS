@@ -29,7 +29,7 @@ const LeaveTable = (props) => {
               <td>{candidate.email}</td>
               <td>{candidate.phone}</td>
               <td>{candidate.position}</td>
-              <td>
+              <td >
                 <select
                   value={candidate.status || "New"}
                   onChange={(e) =>

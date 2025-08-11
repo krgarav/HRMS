@@ -8,8 +8,9 @@ const candidateSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     position: { type: String, required: true },
     status: { type: String, required: true, default: "New" },
+    dateOfJoining: { type: Date, default: null },
     experience: { type: String, required: true },
-    resumePath: { type: String, required: true }, 
+    resumePath: { type: String, required: true },
   },
   { timestamps: true }
 );

@@ -1,7 +1,22 @@
 import React from "react";
 import classes from "./Table.module.css";
+import { useState } from "react";
 
 const Tables = (props) => {
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+
+  const toggleDropdown = (id) => {
+    setOpenDropdownId((prevId) => (prevId === id ? null : id));
+  };
+
+  const handleEdit = (id) => {
+    setOpenDropdownId(null);
+    if (props.onEdit) props.onEdit(id);
+  };
+  const handleDelete = (id) => {
+    setOpenDropdownId(null);
+    if (props.onDelete) props.onDelete(id);
+  };
   return (
     <div className={classes["table-container"]}>
       <table
@@ -45,8 +60,59 @@ const Tables = (props) => {
                 </select>
               </td>
               <td>{candidate.experience}</td>
-              <td>
-                <button class="action-btn"> ⋮ </button>
+              <td style={{ position: "relative" }}>
+                <button
+                  className={classes["action-btn"]}
+                  onClick={() => toggleDropdown(candidate._id)}
+                >
+                  ⋮
+                </button>
+                {openDropdownId === candidate._id && (
+                  <div
+                    className={classes["dropdown-menu"]}
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: "100%",
+                      backgroundColor: "white",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                      zIndex: 1000,
+                      minWidth: "100px",
+                    }}
+                  >
+                    <button
+                      onClick={() => handleEdit(candidate._id)}
+                      className={classes["dropdown-item"]}
+                      style={{
+                        padding: "8px 12px",
+                        width: "100%",
+                        background: "none",
+                        border: "none",
+                        textAlign: "left",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(candidate._id)}
+                      className={classes["dropdown-item"]}
+                      style={{
+                        padding: "8px 12px",
+                        width: "100%",
+                        background: "none",
+                        border: "none",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        color: "red",
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
           ))}

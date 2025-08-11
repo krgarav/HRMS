@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Tables from "../../UI/Tables";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
-import axios from "axios";
 import EmployeeTable from "../../UI/EmployeeTable";
 import classes from "./Employees.module.css";
 import api from "../../common/Interceptors";

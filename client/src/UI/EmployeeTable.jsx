@@ -17,7 +17,7 @@ const EmployeeTable = (props) => {
     setOpenDropdownId(null);
     if (props.onDelete) props.onDelete(id);
   };
-
+  console.log(props.employees);
   return (
     <div className={classes["table-container"]}>
       <table
@@ -33,7 +33,7 @@ const EmployeeTable = (props) => {
             <th>Employee Address</th>
             <th>Phone No.</th>
             <th>Position</th>
-            <th>Department</th>
+          
             <th>Date of Joining</th>
             <th>Action</th>
           </tr>
@@ -47,23 +47,16 @@ const EmployeeTable = (props) => {
               <td>{candidate.phone}</td>
               <td>{candidate.position}</td>
               <td>
-                <select
-                  value={candidate.status || "New"}
-                  onChange={(e) =>
-                    props.onStatusChange(candidate._id, e.target.value)
-                  }
-                >
-                  <option value="New">New</option>
-                  <option value="Scheduled">Scheduled</option>
-                  <option value="Ongoing">Ongoing</option>
-                  <option value="Selected">Selected</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
+                {candidate.dateOfJoining
+                  ? new Date(candidate.dateOfJoining).toLocaleDateString(
+                      "en-GB"
+                    )
+                  : ""}
               </td>
-              <td>{candidate.experience}</td>
+             
               <td style={{ position: "relative" }}>
                 <button
-                  className="action-btn"
+                  className={classes["action-btn"]}
                   onClick={() => toggleDropdown(candidate._id)}
                 >
                   ⋮
