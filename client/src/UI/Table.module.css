@@ -58,3 +58,12 @@ select option {
 .action-btn:hover {
   color: #4B0082;
 }
+
+
+.dropdown-menu {
+  /* styles from inline can go here */
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}

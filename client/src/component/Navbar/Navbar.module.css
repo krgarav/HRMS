@@ -1,29 +1,46 @@
 .navbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: #4B0082;
-  color: #fff;
-  padding: 10px 20px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.icon-wrapper {
-  cursor: pointer;
+  align-items: center;
+  padding: 8px 16px;
+  background: transparent;
 }
 
 .title {
-  margin: 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
+  color: #333;
 }
 
-.right-icons {
+.icons {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
 }
 
 .icon {
+  font-size: 18px;
+  color: #555;
+  cursor: pointer;
+}
+
+.notification {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  background: red;
+  border-radius: 50%;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   cursor: pointer;
 }

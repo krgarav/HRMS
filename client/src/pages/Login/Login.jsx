@@ -2,14 +2,33 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import dashboardImg from "../../assets/first.svg";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const submitHandler = (e) => {
-    localStorage.setItem("token", "ojoijoi");
-    navigate("/dashboard");
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:5000/users/login", {
+        email,
+        password,
+      });
+
+      // Save token in localStorage
+      localStorage.setItem("token", res.data.token);
+
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    }
   };
 
   return (
@@ -65,32 +84,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-
-    // <div>
-    //   <form onSubmit={submitHandler}>
-    //     <label htmlFor="email">Email Address</label>
-    //     <input
-    //       type="email"
-    //       id="email"
-    //       value={email}
-    //       onChange={(e) => setEmail(e.target.value)}
-    //       required
-    //     />
-
-    //     <label htmlFor="password">Password</label>
-    //     <input
-    //       type="password"
-    //       id="password"
-    //       value={password}
-    //       onChange={(e) => setPassword(e.target.value)}
-    //       required
-    //     />
-    //     <button type="submit">Login</button>
-    //   </form>
-    //   <small>
-    //     Don't have an account? ? <Link to="/register">Register</Link>
-    //   </small>
-    // </div>
   );
 };
 

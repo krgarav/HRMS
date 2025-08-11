@@ -7,8 +7,8 @@
   width: 240px;
   background: #fff;
   padding: 20px;
-  border-right: 1px solid #d0a8f0;
   display: flex;
+  gap: 20px;
   flex-direction: column;
 }
 
@@ -29,7 +29,7 @@
   padding: 8px 8px 8px 30px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .searchIcon {
@@ -46,7 +46,7 @@
 }
 
 .sectionTitle {
-  font-size: 12px;
+  font-size: 14px;
   color: #999;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -55,12 +55,15 @@
 .navItem {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 0;
+  gap: 10px;
+  padding: 8px 0 8px 12px; /* space for left bar */
   color: #333;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
   transition: color 0.2s ease;
+  position: relative; /* important for ::before positioning */
+  border-radius: 4px;
+  margin: 5px;
 }
 
 .navItem:hover {
@@ -70,13 +73,15 @@
 .logoutBtn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: none;
   border: none;
   color: #333;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   padding: 0;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .logoutBtn:hover {
@@ -86,4 +91,21 @@
 .mainContent {
   flex: 1;
   padding: 20px;
+}
+
+.active {
+  color: #5b21b6;
+  font-weight: 500;
+}
+
+.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #5b21b6;
+  border-radius: 0 3px 3px 0;
+  left: -20px;
 }

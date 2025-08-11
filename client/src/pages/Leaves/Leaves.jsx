@@ -1,8 +1,13 @@
 import React from 'react'
+import Navbar from '../../component/Navbar/Navbar'
+import Tables from '../../UI/Tables'
 
 const Leaves = () => {
   return (
-    <div>Leaves</div>
+    <>
+      {/* <Navbar title={"Candidate"} /> */}
+      <Tables />;
+    </>
   )
 }
 

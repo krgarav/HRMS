@@ -1,19 +1,29 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FiUsers, FiUserPlus } from "react-icons/fi";
 import { BsBarChartLine, BsStars } from "react-icons/bs";
 import { IoExitOutline } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import classes from "./SidebarLayout.module.css";
+import Navbar from "../component/Navbar/Navbar";
 
 export default function SidebarLayout() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleLogout = () => {
     const result = window.confirm("Are you sure you want to logout?");
     if (!result) return;
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const isActive = (path) => location.pathname === path;
+
+  const pageTitles = {
+    "/dashboard": "Dashboard",
+    "/employees": "Employees",
+    "/attendance": "Attendance",
+    "/leaves": "Leaves",
+  };
+  const title = pageTitles[location.pathname] || "Candidates";
 
   return (
     <div className={classes.layout}>
@@ -30,7 +40,12 @@ export default function SidebarLayout() {
         {/* Recruitment Section */}
         <div className={classes.section}>
           <p className={classes.sectionTitle}>Recruitment</p>
-          <Link to="/dashboard" className={classes.navItem}>
+          <Link
+            to="/dashboard"
+            className={`${classes.navItem} ${
+              isActive("/dashboard") ? classes.active : ""
+            }`}
+          >
             <FiUserPlus /> Candidates
           </Link>
         </div>
@@ -38,13 +53,28 @@ export default function SidebarLayout() {
         {/* Organization Section */}
         <div className={classes.section}>
           <p className={classes.sectionTitle}>Organization</p>
-          <Link to="/employees" className={classes.navItem}>
+          <Link
+            to="/employees"
+            className={`${classes.navItem} ${
+              isActive("/employees") ? classes.active : ""
+            }`}
+          >
             <FiUsers /> Employees
           </Link>
-          <Link to="/attendance" className={classes.navItem}>
+          <Link
+            to="/attendance"
+            className={`${classes.navItem} ${
+              isActive("/attendance") ? classes.active : ""
+            }`}
+          >
             <BsBarChartLine /> Attendance
           </Link>
-          <Link to="/leaves" className={classes.navItem}>
+          <Link
+            to="/leaves"
+            className={`${classes.navItem} ${
+              isActive("/leaves") ? classes.active : ""
+            }`}
+          >
             <BsStars /> Leaves
           </Link>
         </div>
@@ -60,6 +90,7 @@ export default function SidebarLayout() {
 
       {/* Main Content */}
       <main className={classes.mainContent}>
+        <Navbar title={title} />
         <Outlet />
       </main>
     </div>

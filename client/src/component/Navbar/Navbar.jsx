@@ -1,23 +1,24 @@
 import React from "react";
-import { FaBars, FaEnvelope, FaUserCircle } from "react-icons/fa";
+import { FaEnvelope, FaBell } from "react-icons/fa";
+import profilePic from "../../assets/profile.svg";
 import classes from "./Navbar.module.css";
-const Navbar = () => {
+const Navbar = (props) => {
   return (
-    <nav className={classes.navbar}>
-      {/* Left menu icon */}
-      <div className={classes.iconWrapper}>
-        <FaBars size={22} />
+    <div className={classes.navbar}>
+      <div className={classes.title}>{props.title}</div>
+      <div className={classes.icons}>
+        <FaEnvelope className={classes.icon} />
+        <div className={classes.notification}>
+          <FaBell className={classes.icon} />
+          <span className={classes.badge}></span>
+        </div>
+        <img
+          className={classes.avatar}
+          src={profilePic}
+          alt="Profile"
+        />
       </div>
-
-      {/* Center title */}
-      <h1 className={classes.title}>My App</h1>
-
-      {/* Right icons */}
-      <div className={classes.rightIcons}>
-        <FaEnvelope size={20} className={classes.icon} />
-        <FaUserCircle size={24} className={classes.icon} />
-      </div>
-    </nav>
+    </div>
   );
 };
 

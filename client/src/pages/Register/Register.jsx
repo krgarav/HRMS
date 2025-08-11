@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Register.module.css";
 import dashboardImg from "../../assets/first.svg";
+import axios from "axios";
+import { toast } from "react-toastify";
 const Register = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -9,15 +11,33 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       setPasswordMatch(false);
+      toast.error("Passwords do not match!", { position: "top-right" });
       return;
     }
 
-    console.log({ fullname, email, password, confirmPassword });
+    const obj = { name: fullname, email, password };
+
+    try {
+      const res = await axios.post("http://localhost:5000/users/register", obj);
+
+      toast.success("User registered successfully!", { position: "top-right" });
+
+      // Optional: reset form fields
+      setFullname("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      const errMsg =
+        error.response?.data?.error ||
+        "Something went wrong. Please try again.";
+      toast.error(errMsg, { position: "top-right" });
+    }
   };
 
   const handleConfirmPasswordChange = (e) => {
