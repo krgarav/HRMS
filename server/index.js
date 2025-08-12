@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const candidateRoutes = require("./routes/candidateRoute");
+const leaveRoutes = require("./routes/leaveRoute");
 const path = require("path");
 const builtPath = path.join(__dirname, "./dist");
 const cors = require("cors");
@@ -23,7 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use("/users", userRoutes);
 app.use("/candidate", candidateRoutes);
-
+app.use("/leave", leaveRoutes);
 app.use((req, res) => {
   res.sendFile(path.join(builtPath, "index.html"));
 });

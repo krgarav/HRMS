@@ -7,7 +7,13 @@ import api from "../../common/Interceptors";
 import { toast } from "react-toastify";
 import Modal from "../../component/Modal/Modal";
 import { FiUpload } from "react-icons/fi";
-
+const initialFormData = {
+  candidateId: "",
+  position: "",
+  leaveDate: "",
+  reason: "",
+  doc: null,
+};
 const Leaves = () => {
   const [presentEmployees, setPresentEmployees] = useState([]);
   const [leaveEmployees, setLeaveEmployees] = useState([]);
@@ -15,7 +21,11 @@ const Leaves = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showMenu, setShowMenu] = useState(false);
   const [formData, setFormData] = useState({
+    candidateId: "",
     position: "",
+    leaveDate: "",
+    reason: "",
+    doc: null,
   });
 
   const debounce = (func, delay) => {
@@ -48,14 +58,64 @@ const Leaves = () => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: name === "doc" ? files[0] : value,
     }));
   };
+
   const addCandidateHandler = () => {
     setShowModal(true);
   };
   const debouncedFetch = useCallback(debounce(fetchCandidates, 400), []);
-  const submitHandler = () => {};
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    try {
+      if (!formData.candidateId) {
+        toast.error("Please select an employee");
+        return;
+      }
+
+      if (!formData.leaveDate) {
+        toast.error("Please select a leave date");
+        return;
+      }
+
+      if (!formData.reason || formData.reason.trim() === "") {
+        toast.error("Please enter a reason for leave");
+        return;
+      }
+
+      if (!formData.doc) {
+        toast.error("Please upload a document");
+        return;
+      }
+
+      const payload = new FormData();
+      payload.append("candidateId", formData.candidateId);
+      payload.append("position", formData.position);
+      payload.append("leaveDate", formData.leaveDate);
+      payload.append("reason", formData.reason);
+      payload.append("doc", formData.doc);
+
+      const res = await api.post("/leave/apply-leave", payload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      toast.success("Leave applied successfully!");
+      console.log("Leave response:", res.data);
+
+      // Reset form
+      setFormData(initialFormData);
+      setSearchTerm("");
+      setShowMenu(false);
+    } catch (error) {
+      console.error("Error applying leave:", error);
+      toast.error(error.response?.data?.message || "Failed to apply leave");
+    }
+  };
+
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -76,7 +136,11 @@ const Leaves = () => {
 
       // Example: close menu & set search text
       setSearchTerm(res.data.fullName);
-      setFormData({ position: res.data.position });
+      setFormData((prev) => ({
+        ...prev,
+        candidateId: res.data._id,
+        position: res.data.position,
+      }));
       setShowMenu(false);
 
       // Example: store details in state for display
@@ -131,7 +195,7 @@ const Leaves = () => {
         onClose={() => {
           setShowModal(false);
         }}
-        title="Edit Employee Details"
+        title="Add New Leave"
       >
         <form onSubmit={submitHandler} className={classes.form}>
           <div className={classes.row}>
@@ -152,13 +216,14 @@ const Leaves = () => {
                 </ul>
               )}
             </div>
+
             <div className={classes.inputGroup}>
               <input
                 type="text"
                 placeholder="Designation"
                 name="position"
                 value={formData.position}
-                onChange={handleChange}
+                readOnly
               />
             </div>
           </div>
@@ -169,17 +234,18 @@ const Leaves = () => {
                 placeholder="Leave Date"
                 type="date"
                 name="leaveDate"
-                value={formData.phone}
+                value={formData.leaveDate}
                 onChange={handleChange}
               />
             </div>
+
             <div className={classes.inputGroup}>
               <div className={classes.uploadWrapper}>
                 <input
-                  placeholder="Documents"
                   type="file"
-                  name="resume"
-                  className={classes.fileInput}
+                  name="doc"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  className={classes.doc}
                   onChange={handleChange}
                 />
                 <FiUpload className={classes.uploadIcon} />
@@ -197,8 +263,8 @@ const Leaves = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className={classes.inputGroup}></div>
           </div>
+
           <button
             type="submit"
             className={`${classes.saveBtn} ${classes.activeBtn}`}
