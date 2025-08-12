@@ -17,7 +17,7 @@ const Dashboard = () => {
     phone: "",
     position: "",
     experience: "",
-    department:"",
+    department: "",
     resume: null,
   });
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -72,22 +72,13 @@ const Dashboard = () => {
       data.append("phone", formData.phone);
       data.append("position", formData.position);
       data.append("experience", formData.experience);
-      data.append("resume", formData.resume); // File object
+      data.append("resume", formData.resume);
 
-      // Get token from localStorage
-      const token = localStorage.getItem("token");
-
-      // Send request to backend with token in Authorization header
-      const res = await axios.post(
-        "http://localhost:5000/candidate/add-new-candidate",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // Send token here
-          },
-        }
-      );
+      const res = await api.post("/candidate/add-new-candidate", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       toast.success("Candidate details submitted successfully!", {
         position: "top-right",
@@ -106,17 +97,13 @@ const Dashboard = () => {
     }
   };
 
-  // Handle status change
   const handleStatusChange = async (candidateId, newStatus) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        "http://localhost:5000/candidate/change-status",
-        { candidateId, status: newStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.put("/candidate/change-status", {
+        candidateId,
+        status: newStatus,
+      });
 
-      // Update local state for immediate UI feedback
       setCandidates((prevCandidates) =>
         prevCandidates.map((candidate) =>
           candidate._id === candidateId
@@ -127,6 +114,24 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status. Please try again.");
+    }
+  };
+
+  const deleteHandler = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this candidate?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await api.delete(`/candidate/delete-candidate/${id}`);
+
+      setCandidates((prevCandidates) =>
+        prevCandidates.filter((candidate) => candidate._id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting candidate:", error);
+      alert("Failed to delete candidate. Please try again.");
     }
   };
   return (
@@ -162,7 +167,11 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
-      <Tables candidates={candidates} onStatusChange={handleStatusChange} />
+      <Tables
+        candidates={candidates}
+        onStatusChange={handleStatusChange}
+        onDelete={deleteHandler}
+      />
 
       <Modal
         isOpen={showModal}
@@ -236,7 +245,7 @@ const Dashboard = () => {
                 Experience<span>*</span>
               </label>
               <input
-                type="text"
+                type="number"
                 name="experience"
                 value={formData.experience}
                 onChange={handleChange}
@@ -261,7 +270,7 @@ const Dashboard = () => {
           <div className={classes.row}>
             <div className={classes.inputGroup}>
               <label>
-               Department<span>*</span>
+                Department<span>*</span>
               </label>
               <input
                 type="text"
@@ -270,7 +279,6 @@ const Dashboard = () => {
                 onChange={handleChange}
               />
             </div>
-            
           </div>
 
           <div className={classes.declaration}>

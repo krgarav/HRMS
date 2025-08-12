@@ -27,7 +27,7 @@ export default function App() {
   return (
     <Routes>
       {/* Redirect for root path */}
-      <Route path="/" element={<RootRedirect />} />
+      {/* <Route path="/" element={<RootRedirect />} /> */}
       <Route
         path="/register"
         element={

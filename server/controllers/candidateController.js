@@ -33,9 +33,28 @@ exports.createCandidate = async (req, res) => {
   }
 };
 
+exports.deleteCandidate = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const candidate = await Candidate.findById(id);
+
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
+    }
+
+    await Candidate.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Candidate deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error while deleting candidate" });
+  }
+};
+
 exports.getAllCandidates = async (req, res) => {
   try {
-    const candidates = await Candidate.find().sort({ createdAt: -1 }); // latest first
+    const candidates = await Candidate.find().sort({ createdAt: -1 });
     res.status(200).json(candidates);
   } catch (err) {
     console.error(err);
@@ -47,7 +66,7 @@ exports.getEmployees = async (req, res) => {
   try {
     const candidates = await Candidate.find({ status: "Selected" }).sort({
       createdAt: -1,
-    }); // latest first
+    });
     res.status(200).json(candidates);
   } catch (err) {
     console.error(err);
@@ -65,17 +84,14 @@ exports.changeStatus = async (req, res) => {
         .json({ message: "Candidate ID and status are required" });
     }
 
-    // Find candidate
     const candidate = await Candidate.findById(candidateId);
 
     if (!candidate) {
       return res.status(404).json({ message: "Candidate not found" });
     }
 
-    // Update status
     candidate.status = status;
 
-    // If status is Selected and dateOfJoining is not already set, set it to today
     if (status === "Selected" && !candidate.dateOfJoining) {
       candidate.dateOfJoining = new Date();
     }
@@ -152,12 +168,10 @@ exports.getPresentCandidates = async (req, res) => {
   try {
     const { search } = req.query;
 
-  
     const filter = { attendanceStatus: "Present" };
 
-  
     if (search && search.trim() !== "") {
-      filter.fullName = { $regex: search, $options: "i" }; // case-insensitive
+      filter.fullName = { $regex: search, $options: "i" };
     }
 
     const candidates = await Candidate.find(filter).sort({ createdAt: -1 });
@@ -172,7 +186,7 @@ exports.getPresentCandidates = async (req, res) => {
 };
 exports.getCandidateById = async (req, res) => {
   try {
-    const { id } = req.params; // ID from URL
+    const { id } = req.params;
 
     const candidate = await Candidate.findById(id);
 
@@ -183,6 +197,8 @@ exports.getCandidateById = async (req, res) => {
     res.status(200).json(candidate);
   } catch (err) {
     console.error("Error fetching candidate by ID:", err);
-    res.status(500).json({ message: "Server error while fetching candidate details" });
+    res
+      .status(500)
+      .json({ message: "Server error while fetching candidate details" });
   }
-}
+};

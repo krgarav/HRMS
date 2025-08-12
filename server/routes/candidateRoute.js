@@ -10,7 +10,8 @@ const {
   updateEmployee,
   changeAttendanceStatus,
   getPresentCandidates,
-  getCandidateById
+  getCandidateById,
+  deleteCandidate
 } = require("../controllers/candidateController");
 const auth = require("../middleware/auth");
 
@@ -45,6 +46,7 @@ router.post(
   upload.single("resume"),
   createCandidate
 );
+router.delete("/delete-candidate/:id",auth, deleteCandidate);
 router.put("/change-status", auth,changeStatus );
 router.get("/get-candidates", auth, getAllCandidates);
 router.get("/get-Employees", auth, getEmployees);
