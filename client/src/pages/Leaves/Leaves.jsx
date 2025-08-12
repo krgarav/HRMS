@@ -35,9 +35,22 @@ const Leaves = () => {
       timer = setTimeout(() => func(...args), delay);
     };
   };
-  // useEffect(() => {
-  //   fetchCandidates();
-  // }, []);
+  useEffect(() => {
+    fetchCandidatesWithLeaves();
+  }, []);
+
+  const fetchCandidatesWithLeaves = async () => {
+    try {
+      const res = await api.get("/leave/all-leaves-with-candidate");
+      setLeaveEmployees(res.data);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error.response?.data?.message ||
+          "Error fetching employees. Please try again."
+      );
+    }
+  };
 
   const fetchCandidates = async (query) => {
     try {
@@ -99,14 +112,12 @@ const Leaves = () => {
       payload.append("reason", formData.reason);
       payload.append("doc", formData.doc);
 
-      const res = await api.post("/leave/apply-leave", payload, {
+      await api.post("/leave/apply-leave", payload, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       toast.success("Leave applied successfully!");
-      console.log("Leave response:", res.data);
-
-      // Reset form
+      setShowModal(false);
       setFormData(initialFormData);
       setSearchTerm("");
       setShowMenu(false);
@@ -134,7 +145,6 @@ const Leaves = () => {
       const res = await api.get(`/candidate/employee/${empId}`);
       console.log("Candidate details:", res.data);
 
-      // Example: close menu & set search text
       setSearchTerm(res.data.fullName);
       setFormData((prev) => ({
         ...prev,
@@ -142,9 +152,6 @@ const Leaves = () => {
         position: res.data.position,
       }));
       setShowMenu(false);
-
-      // Example: store details in state for display
-      // setSelectedCandidate(res.data);
     } catch (error) {
       console.error("Error fetching candidate:", error);
       toast.error(
