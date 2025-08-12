@@ -179,3 +179,19 @@ label span {
 .dropdownMenu li:hover {
   background: #f5f5f5;
 }
+.rightBottomSection {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+.topHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #4d007d;
+  color: white;
+  padding: 10px;
+  width: 100%;
+}

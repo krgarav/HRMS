@@ -1,5 +1,5 @@
 .calendar {
-  width: 300px;
+  width: 100%;
   background: white;
   border-radius: 8px;
   overflow: hidden;
@@ -11,8 +11,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #007bff;
-  color: white;
+  background: transparent;
+  color: black;
   padding: 10px;
 }
 
@@ -23,8 +23,8 @@
 .navBtn {
   background: none;
   border: none;
-  color: white;
-  font-size: 18px;
+  color: black;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .day {
-  padding: 10px;
+  padding: 5px;
   border: none;
   background: none;
   cursor: pointer;
@@ -64,18 +64,18 @@
 
 .today {
   border: 1px solid #007bff;
-  border-radius: 50%;
+  border-radius: 5%;
 }
 
 .selected {
   background: #007bff;
   color: white;
-  border-radius: 50%;
+  border-radius: 5%;
 }
 
 .num {
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
 }

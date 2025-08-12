@@ -193,8 +193,15 @@ const Leaves = () => {
         <div style={{ width: "70%" }}>
           <LeaveTable employees={leaveEmployees} />
         </div>
-        <div style={{ width: "30%", marginTop: "20px" }}>
-          <Calendar />
+        <div className={classes.rightBottomSection} style={{ width: "30%", marginTop: "20px" }}>
+          <div className={classes.topHeader}>Leave Calender</div>
+          <div style={{display:"flex", alignSelf:"center"}}>
+            <Calendar />
+          </div>
+
+          <div>
+            <h4>Approved Leaves</h4>
+          </div>
         </div>
       </div>
       <Modal
