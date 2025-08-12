@@ -6,6 +6,7 @@ const {
   getAllLeavesWithCandidate,
   getApprovedLeaves,
   updateLeaveStatus,
+  downloadLeaveDoc,
 } = require("../controllers/leaveController");
 const path = require("path");
 const fs = require("fs");
@@ -27,11 +28,12 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + "-" + file.originalname);
   },
 });
-
+const UPLOAD_DIR = path.resolve(__dirname, "../uploads/leaves");
 const upload = multer({ storage });
 
 router.post("/apply-leave", auth, upload.single("doc"), applyLeave);
 router.get("/all-leaves-with-candidate", auth, getAllLeavesWithCandidate);
 router.get("/approved-leaves", auth, getApprovedLeaves);
 router.patch("/update-status/:id", auth, updateLeaveStatus);
+router.get("/download-leave-doc", auth, downloadLeaveDoc);
 module.exports = router;

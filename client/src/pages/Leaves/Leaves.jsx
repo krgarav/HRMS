@@ -135,6 +135,7 @@ const Leaves = () => {
       });
 
       toast.success("Leave applied successfully!");
+      fetchCandidatesWithLeaves();
       setShowModal(false);
       setFormData(initialFormData);
       setSearchTerm("");
@@ -194,6 +195,37 @@ const Leaves = () => {
       setIsLoading(false);
     }
   };
+  const handleDownload = async (leaveId) => {
+    try {
+      const response = await api.get(
+        `/leave/download-leave-doc?leaveId=${encodeURIComponent(leaveId)}`,
+        { responseType: "blob" }
+      );
+
+      const contentDisposition = response.headers["content-disposition"];
+      let fileName = "Medical_Reason.pdf";
+
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="?(.+?)"?$/);
+        if (fileNameMatch?.[1]) {
+          fileName = decodeURIComponent(fileNameMatch[1].trim());
+        }
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download error:", error);
+      alert("Failed to download file");
+    }
+  };
 
   return (
     <>
@@ -230,6 +262,7 @@ const Leaves = () => {
           <LeaveTable
             employees={leaveEmployees}
             onStatusChange={statusHandler}
+            handleDownload={handleDownload}
           />
         </div>
         <div
@@ -315,7 +348,7 @@ const Leaves = () => {
                 <input
                   type="file"
                   name="doc"
-                  accept=".pdf,.jpg,.jpeg,.png"
+                  accept=".pdf"
                   className={classes.doc}
                   onChange={handleChange}
                 />

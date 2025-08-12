@@ -3,7 +3,8 @@ const Candidate = require("../models/candidate.js");
 
 exports.createCandidate = async (req, res) => {
   try {
-    const { fullName, email, phone, position, experience } = req.body;
+    const { fullName, email, phone, position, experience, department } =
+      req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "Resume file is required" });
@@ -22,6 +23,7 @@ exports.createCandidate = async (req, res) => {
       phone,
       position,
       experience,
+      department,
       resumePath: req.file.path,
     });
 

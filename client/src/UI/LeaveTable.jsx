@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "./Table.module.css";
 import { FiFileText } from "react-icons/fi";
 const LeaveTable = (props) => {
+ 
   return (
     <div className={classes["table-container"]}>
       <table
@@ -46,7 +47,12 @@ const LeaveTable = (props) => {
               </td>
 
               <td>
-                <button className={classes["action-btn"]}>
+                <button
+                  className={classes["action-btn"]}
+                  onClick={(e) => {
+                    props.handleDownload(candidate._id);
+                  }}
+                >
                   <FiFileText size={20} />
                 </button>
               </td>

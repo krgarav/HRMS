@@ -73,7 +73,7 @@ const Dashboard = () => {
       data.append("position", formData.position);
       data.append("experience", formData.experience);
       data.append("resume", formData.resume);
-
+      data.append("department", formData.department);
       const res = await api.post("/candidate/add-new-candidate", data, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -259,6 +259,7 @@ const Dashboard = () => {
                 <input
                   type="file"
                   name="resume"
+                  accept=".pdf"
                   className={classes.fileInput}
                   onChange={handleChange}
                 />

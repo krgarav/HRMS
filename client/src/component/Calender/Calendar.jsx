@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import styles from "./Calendar.module.css";
 
+const formatDateLocal = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 const getLeaveCountByDate = (leaveArray) => {
   return leaveArray.reduce((acc, leave) => {
-    const dateKey = new Date(leave.leaveDate).toISOString().split("T")[0]; // "YYYY-MM-DD"
+    const dateKey = formatDateLocal(new Date(leave.leaveDate));
     acc[dateKey] = (acc[dateKey] || 0) + 1;
     return acc;
   }, {});
@@ -59,8 +66,10 @@ const Calendar = ({ leaves = [] }) => {
         const isSelected =
           selectedDate &&
           dateObj.toDateString() === selectedDate.toDateString();
-        const isoDate = dateObj.toISOString().split("T")[0];
+
+        const isoDate = formatDateLocal(dateObj); // Use local date format here
         const candidateCount = leaveCountByDate[isoDate] || 0;
+
         days.push(
           <button
             key={`current-${i}`}
