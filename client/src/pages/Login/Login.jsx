@@ -12,10 +12,13 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       // Save token in localStorage
       localStorage.setItem("token", res.data.token);
@@ -32,55 +35,61 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.fullWrapper}>
-      <div className={styles.registerWrapper}>
-        <div className={styles.leftSection}>
-          <div className={styles.logo}>LOGO</div>
-          <div className={styles.imagePlaceholder}>
-            <img src={dashboardImg} alt="Dashboard" />
+    <div className={styles.parent}>
+      <div className={styles.logo}>
+        <div className={styles.box}></div>
+        <div>LOGO</div>
+      </div>
+      <div className={styles.fullWrapper}>
+        <div className={styles.registerWrapper}>
+          <div className={styles.leftSection}>
+            <div className={styles.logo}>LOGO</div>
+            <div className={styles.imagePlaceholder}>
+              <img src={dashboardImg} alt="Dashboard" />
+            </div>
+            <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h3>
+            <p>
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+              minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+              aliquip ex ea commodo consequat.
+            </p>
           </div>
-          <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h3>
-          <p>
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat.
-          </p>
-        </div>
 
-        <div className={styles.rightSection}>
-          <h2>Welcome to Dashboard</h2>
-          <form onSubmit={submitHandler} className={styles.form}>
-            <label htmlFor="email">
-              Email Address<span>*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <div className={styles.rightSection}>
+            <h2>Welcome to Dashboard</h2>
+            <form onSubmit={submitHandler} className={styles.form}>
+              <label htmlFor="email">
+                Email Address<span>*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
 
-            <label htmlFor="password">
-              Password<span>*</span>
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+              <label htmlFor="password">
+                Password<span>*</span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
 
-            <button type="submit" className={styles.registerBtn}>
-              Login
-            </button>
-          </form>
-          <small>
-            Don't have an account?  <Link to="/register">Register</Link>
-          </small>
+              <button type="submit" className={styles.registerBtn}>
+                Login
+              </button>
+            </form>
+            <small>
+              Don't have an account? <Link to="/register">Register</Link>
+            </small>
+          </div>
         </div>
       </div>
     </div>

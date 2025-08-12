@@ -1,19 +1,38 @@
 import React, { useState } from "react";
 import styles from "./Calendar.module.css";
 
-const Calendar = () => {
+const getLeaveCountByDate = (leaveArray) => {
+  return leaveArray.reduce((acc, leave) => {
+    const dateKey = new Date(leave.leaveDate).toISOString().split("T")[0]; // "YYYY-MM-DD"
+    acc[dateKey] = (acc[dateKey] || 0) + 1;
+    return acc;
+  }, {});
+};
+
+const Calendar = ({ leaves = [] }) => {
   const [viewDate, setViewDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const startOfMonth = (date) => new Date(date.getFullYear(), date.getMonth(), 1);
-  const endOfMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const leaveCountByDate = React.useMemo(
+    () => getLeaveCountByDate(leaves),
+    [leaves]
+  );
+
+  const startOfMonth = (date) =>
+    new Date(date.getFullYear(), date.getMonth(), 1);
+  const endOfMonth = (date) =>
+    new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   const renderDays = () => {
     const start = startOfMonth(viewDate);
     const end = endOfMonth(viewDate);
     const startDayIndex = start.getDay();
     const daysInMonth = end.getDate();
-    const prevMonthEnd = new Date(viewDate.getFullYear(), viewDate.getMonth(), 0).getDate();
+    const prevMonthEnd = new Date(
+      viewDate.getFullYear(),
+      viewDate.getMonth(),
+      0
+    ).getDate();
 
     const totalCells = Math.ceil((startDayIndex + daysInMonth) / 7) * 7;
     const today = new Date();
@@ -31,11 +50,17 @@ const Calendar = () => {
           </div>
         );
       } else if (dayNum <= daysInMonth) {
-        const dateObj = new Date(viewDate.getFullYear(), viewDate.getMonth(), dayNum);
+        const dateObj = new Date(
+          viewDate.getFullYear(),
+          viewDate.getMonth(),
+          dayNum
+        );
         const isToday = dateObj.toDateString() === today.toDateString();
         const isSelected =
-          selectedDate && dateObj.toDateString() === selectedDate.toDateString();
-
+          selectedDate &&
+          dateObj.toDateString() === selectedDate.toDateString();
+        const isoDate = dateObj.toISOString().split("T")[0];
+        const candidateCount = leaveCountByDate[isoDate] || 0;
         days.push(
           <button
             key={`current-${i}`}
@@ -45,6 +70,10 @@ const Calendar = () => {
             onClick={() => setSelectedDate(dateObj)}
           >
             <span className={styles.num}>{dayNum}</span>
+
+            {candidateCount > 0 && (
+              <span className={styles.countBadge}>{candidateCount}</span>
+            )}
           </button>
         );
       } else {
@@ -64,18 +93,23 @@ const Calendar = () => {
         <button
           className={styles.navBtn}
           onClick={() =>
-            setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))
+            setViewDate(
+              new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1)
+            )
           }
         >
           ◀
         </button>
         <div className={styles.monthTitle}>
-          {viewDate.toLocaleString("default", { month: "long" })} {viewDate.getFullYear()}
+          {viewDate.toLocaleString("default", { month: "long" })}{" "}
+          {viewDate.getFullYear()}
         </div>
         <button
           className={styles.navBtn}
           onClick={() =>
-            setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))
+            setViewDate(
+              new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1)
+            )
           }
         >
           ▶
@@ -84,7 +118,9 @@ const Calendar = () => {
 
       <div className={styles.weekDays}>
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
-          <div key={d} className={styles.weekDay}>{d}</div>
+          <div key={d} className={styles.weekDay}>
+            {d}
+          </div>
         ))}
       </div>
 

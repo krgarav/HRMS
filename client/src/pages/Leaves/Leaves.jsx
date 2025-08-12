@@ -18,6 +18,7 @@ const Leaves = () => {
   const [presentEmployees, setPresentEmployees] = useState([]);
   const [leaveEmployees, setLeaveEmployees] = useState([]);
   const [approvedLeaves, setApprovedLeaves] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMenu, setShowMenu] = useState(false);
@@ -28,7 +29,6 @@ const Leaves = () => {
     reason: "",
     doc: null,
   });
-
   const debounce = (func, delay) => {
     let timer;
     return (...args) => {
@@ -45,8 +45,10 @@ const Leaves = () => {
   const fetchCandidatesWithApprovedLeaves = async () => {
     try {
       const res = await api.get("/leave/approved-leaves");
-      console.log(res);
-      // setApprovedLeaves(res.data);
+
+      // if (res.data?.length > 0) {
+      setApprovedLeaves(res.data);
+      // }
     } catch (error) {
       console.error(error);
       toast.error(
@@ -177,15 +179,19 @@ const Leaves = () => {
   };
   const statusHandler = async (leaveId, newStatus) => {
     try {
+      setIsLoading(true);
       await api.patch(`/leave/update-status/${leaveId}`, {
         status: newStatus,
       });
       fetchCandidatesWithLeaves();
+      fetchCandidatesWithApprovedLeaves();
     } catch (error) {
       console.error("Error updating leave status:", error);
       toast.error(
         error.response?.data?.message || "Failed to update leave status"
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -232,7 +238,7 @@ const Leaves = () => {
         >
           <div className={classes.topHeader}>Leave Calender</div>
           <div style={{ display: "flex", alignSelf: "center" }}>
-            <Calendar />
+            <Calendar leaves={approvedLeaves} />
           </div>
 
           <div className={classes.bottomContainer}>

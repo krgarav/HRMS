@@ -48,10 +48,12 @@
 }
 
 .day {
+  position: relative;
   padding: 5px;
   border: none;
   background: none;
   cursor: pointer;
+  border: 1px solid whitesmoke;
 }
 
 .day:hover {
@@ -63,19 +65,40 @@
 }
 
 .today {
-  border: 1px solid #007bff;
+  border: 1px solid #5b00b1;
   border-radius: 5%;
 }
 
-.selected {
-  background: #007bff;
+/* .selected {
+  background: #5b00b1;
   color: white;
   border-radius: 5%;
-}
+} */
 
 .num {
   display: inline-block;
-  width: 10px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  user-select: none;
+}
+
+.countBadge {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background-color: #5b00b1;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+  min-width: 10px;
   height: 10px;
-  line-height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }

@@ -45,7 +45,7 @@ exports.getAllLeavesWithCandidate = async (req, res) => {
 
 exports.getApprovedLeaves = async (req, res) => {
   try {
-    const approvedLeaves = await Leave.find({ status: "Approved" })
+    const approvedLeaves = await Leave.find({ status: "Approve" })
       .populate("candidate", "fullName email position")
       .populate("approvedBy", "name email")
       .sort({ approvedAt: -1 });
