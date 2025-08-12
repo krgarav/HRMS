@@ -195,3 +195,52 @@ label span {
   padding: 10px;
   width: 100%;
 }
+
+
+
+
+
+
+.bottomContainer {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 16px;
+  color: #2e0854; /* dark purple for heading */
+}
+
+.bottomHeading {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.leaveItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.namePosition {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #000; /* black-ish */
+}
+
+.position {
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #a9a9a9; /* light gray */
+  font-style: normal;
+}
+
+.date {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #000;
+}

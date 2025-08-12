@@ -1,4 +1,4 @@
-const Leave = require("../models/Leave");
+const Leave = require("../models/leave");
 
 exports.applyLeave = async (req, res) => {
   try {
@@ -40,5 +40,55 @@ exports.getAllLeavesWithCandidate = async (req, res) => {
   } catch (err) {
     console.error("Error fetching leaves with candidate info:", err);
     res.status(500).json({ message: "Server error while fetching leaves" });
+  }
+};
+
+exports.getApprovedLeaves = async (req, res) => {
+  try {
+    const approvedLeaves = await Leave.find({ status: "Approved" })
+      .populate("candidate", "fullName email position")
+      .populate("approvedBy", "name email")
+      .sort({ approvedAt: -1 });
+
+    res.status(200).json(approvedLeaves);
+  } catch (error) {
+    console.error("Error fetching approved leaves:", error);
+    res
+      .status(500)
+      .json({ message: "Server error while fetching approved leaves" });
+  }
+};
+
+exports.updateLeaveStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: "Status is required" });
+  }
+
+  try {
+    const leave = await Leave.findById(id);
+    if (!leave) {
+      return res.status(404).json({ message: "Leave not found" });
+    }
+
+    leave.status = status;
+
+    if (status.toLowerCase() === "approved") {
+      leave.approvedBy = req.user.id;
+      leave.approvedAt = new Date();
+    } else {
+      leave.approvedBy = undefined;
+      leave.approvedAt = undefined;
+    }
+
+    await leave.save();
+
+    res
+      .status(200)
+      .json({ message: "Leave status updated successfully", leave });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

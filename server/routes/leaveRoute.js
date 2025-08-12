@@ -4,6 +4,8 @@ const auth = require("../middleware/auth");
 const {
   applyLeave,
   getAllLeavesWithCandidate,
+  getApprovedLeaves,
+  updateLeaveStatus,
 } = require("../controllers/leaveController");
 const path = require("path");
 const fs = require("fs");
@@ -30,5 +32,6 @@ const upload = multer({ storage });
 
 router.post("/apply-leave", auth, upload.single("doc"), applyLeave);
 router.get("/all-leaves-with-candidate", auth, getAllLeavesWithCandidate);
-
+router.get("/approved-leaves", auth, getApprovedLeaves);
+router.patch("/update-status/:id", auth, updateLeaveStatus);
 module.exports = router;

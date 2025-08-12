@@ -17,6 +17,7 @@ const initialFormData = {
 const Leaves = () => {
   const [presentEmployees, setPresentEmployees] = useState([]);
   const [leaveEmployees, setLeaveEmployees] = useState([]);
+  const [approvedLeaves, setApprovedLeaves] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMenu, setShowMenu] = useState(false);
@@ -38,7 +39,22 @@ const Leaves = () => {
   useEffect(() => {
     fetchCandidatesWithLeaves();
   }, []);
-
+  useEffect(() => {
+    fetchCandidatesWithApprovedLeaves();
+  }, []);
+  const fetchCandidatesWithApprovedLeaves = async () => {
+    try {
+      const res = await api.get("/leave/approved-leaves");
+      console.log(res);
+      // setApprovedLeaves(res.data);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error.response?.data?.message ||
+          "Error fetching employees. Please try again."
+      );
+    }
+  };
   const fetchCandidatesWithLeaves = async () => {
     try {
       const res = await api.get("/leave/all-leaves-with-candidate");
@@ -159,6 +175,20 @@ const Leaves = () => {
       );
     }
   };
+  const statusHandler = async (leaveId, newStatus) => {
+    try {
+      await api.patch(`/leave/update-status/${leaveId}`, {
+        status: newStatus,
+      });
+      fetchCandidatesWithLeaves();
+    } catch (error) {
+      console.error("Error updating leave status:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to update leave status"
+      );
+    }
+  };
+
   return (
     <>
       <div className={classes.container}>
@@ -191,16 +221,37 @@ const Leaves = () => {
       </div>
       <div className={classes.bottomRightSection}>
         <div style={{ width: "70%" }}>
-          <LeaveTable employees={leaveEmployees} />
+          <LeaveTable
+            employees={leaveEmployees}
+            onStatusChange={statusHandler}
+          />
         </div>
-        <div className={classes.rightBottomSection} style={{ width: "30%", marginTop: "20px" }}>
+        <div
+          className={classes.rightBottomSection}
+          style={{ width: "30%", marginTop: "20px" }}
+        >
           <div className={classes.topHeader}>Leave Calender</div>
-          <div style={{display:"flex", alignSelf:"center"}}>
+          <div style={{ display: "flex", alignSelf: "center" }}>
             <Calendar />
           </div>
 
-          <div>
-            <h4>Approved Leaves</h4>
+          <div className={classes.bottomContainer}>
+            <h2 className={classes.bottomHeading}>Approved Leaves</h2>
+            {approvedLeaves.map((leave) => (
+              <div key={leave._id} className={classes.leaveItem}>
+                <div className={classes.namePosition}>
+                  <span className={classes.name}>
+                    {leave.candidate.fullName}
+                  </span>
+                  <span className={classes.position}>
+                    {leave.candidate.position}
+                  </span>
+                </div>
+                <span className={classes.date}>
+                  {new Date(leave.leaveDate).toLocaleDateString("en-GB")}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

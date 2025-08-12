@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import classes from "./Table.module.css";
 import { FiFileText } from "react-icons/fi";
 const LeaveTable = (props) => {
-  const [openDropdownId, setOpenDropdownId] = useState(null);
-  console.log(props.employees);
   return (
     <div className={classes["table-container"]}>
       <table
@@ -42,8 +40,8 @@ const LeaveTable = (props) => {
                   <option value="Pending" disabled hidden>
                     Pending
                   </option>
-                  <option value="Selected">Approve</option>
-                  <option value="Rejected">Reject</option>
+                  <option value="Approve">Approve</option>
+                  <option value="Reject">Reject</option>
                 </select>
               </td>
 
